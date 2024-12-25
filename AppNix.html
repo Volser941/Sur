@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bottom Navigation with Themes</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Default theme colors (Light) */
+            --bg-color: #f0f0f0;
+            --nav-bg: white;
+            --text-color: #666;
+            --text-active: #2563eb;
+            --section-bg: white;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --nav-bg: #1e1e1e;
+            --text-color: #a0a0a0;
+            --text-active: #60a5fa;
+            --section-bg: #1e1e1e;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="night-blue"] {
+            --bg-color: #0f172a;
+            --nav-bg: #1e293b;
+            --text-color: #94a3b8;
+            --text-active: #38bdf8;
+            --section-bg: #1e293b;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="sunset"] {
+            --bg-color: #4a261d;
+            --nav-bg: #582f23;
+            --text-color: #e7c8bc;
+            --text-active: #f97316;
+            --section-bg: #582f23;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="forest"] {
+            --bg-color: #052e16;
+            --nav-bg: #064e3b;
+            --text-color: #a7f3d0;
+            --text-active: #10b981;
+            --section-bg: #064e3b;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-color);
+            transition: background-color 0.3s ease;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .section-content {
+            background: var(--section-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            min-width: 300px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            display: none;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .theme-card {
+            background: var(--section-bg);
+            border: 2px solid transparent;
+            padding: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .theme-card.active {
+            border-color: var(--text-active);
+        }
+
+        .color-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-name {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .bottom-nav {
+            background: var(--nav-bg);
+            padding: 12px 0;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            bottom: 0;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            padding: 8px 16px;
+        }
+
+        .nav-item:hover {
+            color: var(--text-active);
+        }
+
+        .nav-item.active {
+            color: var(--text-active);
+        }
+
+        .nav-item span {
+            font-size: 12px;
+        }
+
+        .settings-title {
+            color: var(--text-active);
+            margin-bottom: 8px;
+        }
+
+        .settings-subtitle {
+            color: var(--text-color);
+            margin-bottom: 24px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div id="homeSection" class="section-content active">
+            <h2 class="settings-title">Home</h2>
+            <p>Welcome! Try different themes in settings.</p>
+        </div>
+        <div id="searchSection" class="section-content">
+            <h2 class="settings-title">Search</h2>
+            <p>Search functionality would go here.</p>
+        </div>
+        <div id="appsSection" class="section-content">
+            <h2 class="settings-title">Apps</h2>
+            <p>Your apps would be listed here.</p>
+        </div>
+        <div id="earnSection" class="section-content">
+            <h2 class="settings-title">Earn</h2>
+            <p>Earning opportunities would be shown here.</p>
+        </div>
+        <div id="settingsSection" class="section-content">
+            <h2 class="settings-title">Theme Settings</h2>
+            <p class="settings-subtitle">Choose your preferred theme:</p>
+            
+            <div class="theme-grid">
+                <div class="theme-card" data-theme="light">
+                    <div class="color-preview" style="background: linear-gradient(135deg, #f0f0f0, #ffffff)"></div>
+                    <span class="theme-name">Light</span>
+                </div>
+                <div class="theme-card" data-theme="dark">
+                    <div class="color-preview" style="background: linear-gradient(135deg, #121212, #1e1e1e)"></div>
+                    <span class="theme-name">Dark</span>
+                </div>
+                <div class="theme-card" data-theme="night-blue">
+                    <div class="color-preview" style="background: linear-gradient(135deg, #0f172a, #1e293b)"></div>
+                    <span class="theme-name">Night Blue</span>
+                </div>
+                <div class="theme-card" data-theme="sunset">
+                    <div class="color-preview" style="background: linear-gradient(135deg, #4a261d, #582f23)"></div>
+                    <span class="theme-name">Sunset</span>
+                </div>
+                <div class="theme-card" data-theme="forest">
+                    <div class="color-preview" style="background: linear-gradient(135deg, #052e16, #064e3b)"></div>
+                    <span class="theme-name">Forest</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item active" data-section="home">
+                <i data-feather="home"></i>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" data-section="search">
+                <i data-feather="search"></i>
+                <span>Search</span>
+            </div>
+            <div class="nav-item" data-section="apps">
+                <i data-feather="grid"></i>
+                <span>Apps</span>
+            </div>
+            <div class="nav-item" data-section="earn">
+                <i data-feather="dollar-sign"></i>
+                <span>Earn</span>
+            </div>
+            <div class="nav-item" data-section="settings">
+                <i data-feather="settings"></i>
+                <span>Settings</span>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // DOM Elements
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.section-content');
+        const themeCards = document.querySelectorAll('.theme-card');
+
+        // Show active section
+        function showSection(sectionName) {
+            sections.forEach(section => {
+                if (section.id === `${sectionName}Section`) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        // Navigation click handlers
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(navItem => navItem.classList.remove('active'));
+                item.classList.add('active');
+                showSection(item.dataset.section);
+            });
+        });
+
+        // Theme switching
+        function setTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('theme', themeName);
+            
+            // Update active theme card
+            themeCards.forEach(card => {
+                card.classList.toggle('active', card.dataset.theme === themeName);
+            });
+        }
+
+        // Theme click handlers
+        themeCards.forEach(card => {
+            card.addEventListener('click', () => {
+                setTheme(card.dataset.theme);
+            });
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        // Initialize first section
+        showSection('home');
+    </script>
+</body>
+</html>
